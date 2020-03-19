@@ -49,8 +49,8 @@ public class OpcUaHcdClient {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
     //private final KeyStoreLoader loader = new KeyStoreLoader();
-    private final AtomicLong clientHandles = new AtomicLong(1L);
-    private final OpcUaClient client;
+    public final AtomicLong clientHandles = new AtomicLong(1L);
+    public final OpcUaClient client;
 
     public OpcUaHcdClient() throws Exception {
         client = createClient();
@@ -58,7 +58,7 @@ public class OpcUaHcdClient {
         client.connect().get();
     }
 
-    private OpcUaClient createClient() throws Exception {
+    public OpcUaClient createClient() throws Exception {
         SecurityPolicy securityPolicy = SecurityPolicy.None;
 
         // For some reason this does not work with TwinCat servers, but if the resolved Server Name is included in
@@ -66,13 +66,13 @@ public class OpcUaHcdClient {
         EndpointDescription[] endpoints = UaTcpStackClient.getEndpoints("opc.tcp://192.168.1.5:4840").get();
         for (EndpointDescription e: endpoints)
         {
-            logger.info("Endpoint URL: {}", e.getEndpointUrl());
+            logger.info("Endpoint URL: " + e.getEndpointUrl());
         }
         EndpointDescription endpoint = Arrays.stream(endpoints)
                 .filter(e -> e.getSecurityPolicyUri().equals(securityPolicy.getSecurityPolicyUri()))
                 .findFirst().orElseThrow(() -> new Exception("no desired endpoints returned"));
 
-        logger.info("Using endpoint: {} [{}]", endpoint.getEndpointUrl(), securityPolicy);
+        logger.info("Using endpoint:" + endpoint.getEndpointUrl() + ", " + securityPolicy);
 
         //loader.load();
 
@@ -90,52 +90,8 @@ public class OpcUaHcdClient {
 
     }
 
-    public void subscribe(String name) throws Exception {
 
-        // create a subscription and a monitored item
-        UaSubscription subscription = client.getSubscriptionManager().createSubscription(1.0).get();
 
-//        NodeId nodeId = new NodeId(NAMESPACE, Hcd2Namespace.NAMESPACE_PREFIX + name);
-        NodeId nodeId = new NodeId(NAMESPACE, NAMESPACE_PREFIX + name);
-        System.out.println("Subscribing to {}" + nodeId.toString());
-
-        ReadValueId readValueId = new ReadValueId(nodeId,
-                AttributeId.Value.uid(), null, QualifiedName.NULL_VALUE);
-
-        // client handle must be unique per item
-        UInteger clientHandle = uint(clientHandles.getAndIncrement());
-
-        MonitoringParameters parameters = new MonitoringParameters(
-                clientHandle,
-                100.0,     // sampling interval
-                null,       // filter, null means use default
-                uint(10),   // queue size
-                true);      // discard oldest
-
-        MonitoredItemCreateRequest request = new MonitoredItemCreateRequest(
-                readValueId, MonitoringMode.Reporting, parameters);
-
-        //. added this from example
-        //. https://github.com/eclipse/milo/blob/master/milo-examples/client-examples/src/main/java/org/eclipse/milo/examples/client/SubscriptionExample.java
-        BiConsumer<UaMonitoredItem, Integer> onItemCreated = (item, id) -> item.setValueConsumer(this::onSubscriptionValue);
-        List<UaMonitoredItem> items = subscription
-                .createMonitoredItems(TimestampsToReturn.Both, newArrayList(request), onItemCreated).get();
-
-        // do something with the value updates
-        //   UaMonitoredItem item = items.get(0);
-        //   item.setValueConsumer(valueConsumer);
-
-        for (UaMonitoredItem item : items) {
-            if (item.getStatusCode().isGood()) {
-                logger.info("item created for nodeId={}", item.getReadValueId().getNodeId());
-            } else {
-                logger.warn(
-                        "failed to create item for nodeId={} (status={})",
-                        item.getReadValueId().getNodeId(), item.getStatusCode());
-            }
-        }
-
-    }
 
     public void readValue(String nodeName) throws Exception {
 
@@ -185,9 +141,5 @@ public class OpcUaHcdClient {
     }
 
 
-    private void onSubscriptionValue(UaMonitoredItem item, DataValue value) {
-        System.out.println(
-                "subscription value received: " +
-                item.getReadValueId().getNodeId() + ", " + value.getValue());
-    }
+
 }
