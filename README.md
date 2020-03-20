@@ -38,6 +38,9 @@ If you are not building csw from the sources, you can get the script as follows:
 
 Note: An alternative method is to run `sbt stage`, which installs the applications locally in `esen-prototype-deploy/target/universal/stage/bin`.
 
+## Running the TwinCAT project
+Download the .tnzip file from this project to the TwinCAT 3 development environment and load the project archive.
+
 ## Running the HCD and Assembly
 
 Run the container cmd script with arguments. For example:
@@ -45,5 +48,5 @@ Run the container cmd script with arguments. For example:
 * Run the HCD in standalone mode with a local config file (The standalone config format is differennt than the container format):
 
 ```
-./target/universal/stage/bin/esenprototype-container-cmd-app --standalone --local ./src/main/resources/JSampleHcdStandalone.conf
+./target/universal/stage/bin/esenprototype-container-cmd-app --standalone --local ./src/main/resources/JEsenprototypeHcdStandalone.conf
 ```
