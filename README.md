@@ -1,7 +1,9 @@
 # esen-prototype
 
 This project implements an HCD (Hardware Control Daemon) and an Assembly using 
-TMT Common Software ([CSW](https://github.com/tmtsoftware/csw)) APIs. 
+TMT Common Software ([CSW](https://github.com/tmtsoftware/csw)) APIs for the purpose of 
+prototyping the OPC UA HCD and testing with TwinCAT.  The TwinCAT project used for this
+prototype is included in this archive at the top level directory with the extension .tnzip.
 
 ## Subprojects
 
