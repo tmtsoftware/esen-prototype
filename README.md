@@ -10,6 +10,7 @@ prototype is included in this archive at the top level directory with the extens
 * esen-prototype-assembly - an assembly that talks to the esen-prototype HCD - not used in PD prototyping
 * esen-prototype-hcd - an HCD that talks to TwinCAT over OPC/UA using the eclipse.milo project APIs
 * esen-prototype-deploy - for starting/deploying HCDs and assemblies
+* ESEN Remote Temo Demo.tnzip - TwinCAT 3 project archive.
 
 ## Build Instructions
 
@@ -44,11 +45,5 @@ Run the container cmd script with arguments. For example:
 * Run the HCD in standalone mode with a local config file (The standalone config format is differennt than the container format):
 
 ```
-./target/universal/stage/bin/esenprototype-container-cmd-app --standalone --local ./src/main/resources/SampleHcdStandalone.conf
-```
-
-* Start the HCD and assembly in a container using the Java implementations:
-
-```
-./target/universal/stage/bin/esenprototype-container-cmd-app --local ./src/main/resources/JSampleContainer.conf
+./target/universal/stage/bin/esenprototype-container-cmd-app --standalone --local ./src/main/resources/JSampleHcdStandalone.conf
 ```
