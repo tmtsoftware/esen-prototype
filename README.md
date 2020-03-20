@@ -7,8 +7,8 @@ prototype is included in this archive at the top level directory with the extens
 
 ## Subprojects
 
-* esen-prototype-assembly - an assembly that talks to the esen-prototype HCD
-* esen-prototype-hcd - an HCD that talks to the esen-prototype hardware
+* esen-prototype-assembly - an assembly that talks to the esen-prototype HCD - not used in PD prototyping
+* esen-prototype-hcd - an HCD that talks to TwinCAT over OPC/UA using the eclipse.milo project APIs
 * esen-prototype-deploy - for starting/deploying HCDs and assemblies
 
 ## Build Instructions
@@ -51,10 +51,4 @@ Run the container cmd script with arguments. For example:
 
 ```
 ./target/universal/stage/bin/esenprototype-container-cmd-app --local ./src/main/resources/JSampleContainer.conf
-```
-
-* Or the Scala versions:
-
-```
-./target/universal/stage/bin/esenprototype-container-cmd-app --local ./src/main/resources/SampleContainer.conf
 ```
